@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.cyh.qrcodelibrary.camera.CameraManager;
 import com.google.zxing.Result;
 
 public interface CaptureCallback {

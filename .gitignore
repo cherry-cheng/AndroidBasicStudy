@@ -11,3 +11,8 @@
 /build
 /captures
 .externalNativeBuild
+/.idea/*
+/gradlew
+/gradlew.bat
+/Qrcode.iml
+
