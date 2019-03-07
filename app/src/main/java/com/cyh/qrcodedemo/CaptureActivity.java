@@ -38,26 +38,26 @@ import com.google.zxing.Result;
  */
 
 public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.Callback, CaptureCallback {
-    private Context context;
+    private Context context; //上下文
     private Activity activity;
-    private TextView tvLight;
-    private SurfaceView scanPreview;
-    private RelativeLayout scanContainer;
-    private RelativeLayout scanCropView;
+    private TextView tvLight; // 开灯、关灯
+    private SurfaceView scanPreview; // SurfaceView控件
+    private RelativeLayout scanContainer; // 布局容器
+    private RelativeLayout scanCropView;  // 布局中的扫描框
     
-    private boolean isPause;
+    private boolean isPause; //是否暂停
     private CaptureActivityHandler handler;
-    private Rect mCropRect;
-    private CameraManager cameraManager;
-    private InactivityTimer inactivityTimer;
-    private BeepManager beepManager;
-    private ObjectAnimator objectAnimator;
-    private boolean isHasSurface;
+    private Rect mCropRect; //矩形
+    private CameraManager cameraManager; // 相机管理类
+    private InactivityTimer inactivityTimer; // 计时器
+    private BeepManager beepManager; // 蜂蜜器
+    private ObjectAnimator objectAnimator; // 属性动画
+    private boolean isHasSurface; // SurfaceView控件是否存在, surfaceCreated
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // 保持屏幕常亮
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
@@ -72,6 +72,7 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         tvLight = findViewById(R.id.tv_light);
         ToggleButton tbLight = findViewById(R.id.tb_light);
 
+        // 闪光灯控制
         tbLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -85,6 +86,7 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
             }
         });
 
+        //打开相册
         findViewById(R.id.ll_album).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,12 +95,14 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         });
     }
 
+    // 扫码初始化
     private void initScan() {
         scanPreview = findViewById(R.id.capture_preview);
         scanContainer = findViewById(R.id.capture_container);
         scanCropView = findViewById(R.id.capture_crop_view);
         ImageView scanLine = findViewById(R.id.scan_line);
 
+        // 扫描线性动画（属性动画可暂停）
         float curTranslationY = scanLine.getTranslationY();
         objectAnimator = ObjectAnimator.ofFloat(scanLine, "translationY",
                 curTranslationY, Utils.dp2px(this, 170));
@@ -120,6 +124,7 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         super.onPause();
     }
 
+    // 开始扫描
     private void startScan() {
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
@@ -131,29 +136,38 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
             objectAnimator.start();
         }
 
+        // 初始化相机管理
         cameraManager = new CameraManager(context);
         handler = null;
         if (isHasSurface) {
             initCamera(scanPreview.getHolder());
         } else {
+            // 等待surfaceCreated来初始化相机
             scanPreview.getHolder().addCallback(this);
         }
 
+        // 开启计时器
         inactivityTimer.onResume();
     }
 
+    // 暂停扫描
     private void pauseScan() {
         if (handler != null) {
+            // handler 退出同步并置空
             handler.quitSynchronously();
             handler = null;
         }
-
+        // 计时器的暂停
         inactivityTimer.onPause();
+        //关闭蜂鸣器
         beepManager.close();
+        // 关闭相机管理器驱动
         cameraManager.closeDriver();
         if (!isHasSurface) {
+            // remove等待
             scanPreview.getHolder().removeCallback(this);
         }
+        // 动画暂停
         objectAnimator.pause();
         isPause = true;
     }
@@ -196,15 +210,19 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
     @Override
     public void handleDecode(Result result, Bundle bundle) {
+        // 扫码成功之后回调的方法
         inactivityTimer.onActivity();
+        // 播放蜂鸣器
         beepManager.playBeepSoundVibrate();
 
+        // 将扫码的结果返回到主界面
         Intent intent = new Intent();
         intent.putExtra(Utils.BAR_CODE, result.getText());
         setResult(RESULT_OK, intent);
         finish();
     }
 
+    // 初始化相机
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null) {
             throw new IllegalStateException("SurfaceHolder is null");
@@ -225,33 +243,44 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         }
     }
 
+    // 初始化截取的矩形区域
     private void initCrop() {
+        // 获取相机的宽高
         int cameraWidth = cameraManager.getCameraResolution().y;
         int cameraHeight = cameraManager.getCameraResolution().x;
 
+        // 获取布局中扫描框的位置信息
         int[] location = new int[2];
         scanCropView.getLocationInWindow(location);
         int cropLeft = location[0];
         int cropTop = location[1] - Utils.getStatusBarHeight(context);
 
+        // 获取截取的宽高
         int cropWidth = scanCropView.getWidth();
         int cropHeight = scanCropView.getHeight();
 
+        // 获取布局容器的宽高
         int containerWidth = scanContainer.getWidth();
         int containerHeight = scanContainer.getHeight();
 
+        // 计算最终截取的矩形的左上角顶点x坐标
         int x = cropLeft * cameraWidth / containerWidth;
+        // 计算最终截取的矩形的左上角顶点的y坐标
         int y = cropTop * cameraWidth / containerHeight;
 
+        // 计算最终截取的矩形的宽度
         int width = cropWidth * cameraWidth / containerWidth;
+        // 计算最终截取的矩形的高度
         int height = cropHeight * cameraHeight / containerHeight;
 
+        // 生成最终的截取的矩形
         mCropRect = new Rect(x, y, width + x, height + y);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // 相册返回
         if (requestCode == Utils.SELECT_PIC_KITKAT && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             String path = Utils.getPath(context, uri);
@@ -267,8 +296,10 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
     @Override
     protected void onDestroy() {
+        // 关闭计时器
         inactivityTimer.shutdown();
         if (objectAnimator != null) {
+            // 结束动画
             objectAnimator.end();
         }
         super.onDestroy();

@@ -13,6 +13,7 @@ public class OpenCameraInterface {
 
         boolean explicitRequest = cameraId >= 0;
         if (!explicitRequest) {
+            //Select a camera if no explicit camera requested
             int index = 0;
             while (index < numCameras) {
                 Camera.CameraInfo cameraInfo = new Camera.CameraInfo();

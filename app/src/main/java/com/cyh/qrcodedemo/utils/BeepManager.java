@@ -14,6 +14,7 @@ import java.io.IOException;
 import com.cyh.qrcodedemo.R;
 
 /**
+ * Manages beeps and vibrations
  * Created by Administrator on 2019/3/7.
  */
 

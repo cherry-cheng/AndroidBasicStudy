@@ -47,11 +47,13 @@ public class Utils {
     public static final String BAR_CODE = "barCode";
     private static Camera camera;
 
+    // dp转px
     public static float dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpValue, context.getResources().getDisplayMetrics());
     }
 
+    //相机打开出错弹窗
     public static void displayFrameworkBugMessageAndExit(final Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(activity.getString(R.string.app_name));
@@ -72,6 +74,7 @@ public class Utils {
         builder.show();
     }
 
+    // 获取状态栏高度
     public static int getStatusBarHeight(Context context) {
         try {
             @SuppressLint("PrivateApi") Class<?> c = Class.forName("com.android.internal.R$dimen");
@@ -86,6 +89,7 @@ public class Utils {
         return 0;
     }
 
+    // open flashlight
     public static void openFlashlight(CameraManager cameraManager) {
         camera = cameraManager.getCamera();
         Camera.Parameters parameters = camera.getParameters();
@@ -94,6 +98,7 @@ public class Utils {
         camera.startPreview();
     }
 
+    // close flashlight
     public static void closeFlashlight() {
         Camera.Parameters parameters = camera.getParameters();
         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
@@ -101,6 +106,7 @@ public class Utils {
         camera.startPreview();
     }
 
+    // 跳转到图片选择
     public static void openAlbum(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -111,6 +117,7 @@ public class Utils {
         }
     }
 
+    //图片识别
     public static Result scanningImage(String path) {
         if (TextUtils.isEmpty(path)) {
             return null;
@@ -139,6 +146,7 @@ public class Utils {
         return null;
     }
 
+    //中文乱码处理
     public static String recode(String str) {
         String formart = "";
         try {
@@ -154,6 +162,7 @@ public class Utils {
         return formart;
     }
 
+    // 得到图片路径
     public static String getPath(final Context context, final Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 

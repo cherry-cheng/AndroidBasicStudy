@@ -11,6 +11,13 @@ import com.cyh.qrcodelibrary.camera.open.OpenCameraInterface;
 
 import java.io.IOException;
 
+/**
+ * This object wraps the Camera service object and expects to be the only one
+ * talking to it. The implementation encapsulates the steps needed to take
+ * preview-sized images, which are used for both preview and decoding.
+ *
+ * @author dswitkin@google.com (Daniel Switkin)
+ */
 public class CameraManager {
     public static final String TAG= CameraManager.class.getSimpleName();
 
@@ -25,7 +32,7 @@ public class CameraManager {
 
     private final PreviewCallback previewCallbak;
 
-    public static boolean IS_OPEN_LIGHT = false;
+    public static boolean IS_OPEN_LIGHT = false; // 是否开启闪光灯
 
     public Camera getCamera() {
         return camera;
@@ -122,6 +129,10 @@ public class CameraManager {
         requestedCameraId = cameraId;
     }
 
+    /**
+     * 获取相机分辨率
+     * @return
+     */
     public Point getCameraResolution() {
         return configurationManager.getCameraResolution();
     }
@@ -133,6 +144,9 @@ public class CameraManager {
         return null;
     }
 
+    /**
+     * 开启闪光灯
+     */
     public void enableFlash() {
         try {
             if (camera != null && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
@@ -146,6 +160,9 @@ public class CameraManager {
         }
     }
 
+    /**
+     * 关闭闪光灯
+     */
     public void disableFlash() {
         try {
             if (camera != null && context.getPackageManager().hasSystemFeature(

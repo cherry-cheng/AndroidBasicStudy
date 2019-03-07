@@ -8,10 +8,12 @@ import java.util.Set;
 
 public class DecodeFormatManager {
 
+    // 1D解码
     private static final Set<BarcodeFormat> PRODUCT_FORMATS;
     public static final Set<BarcodeFormat> INDUSTRIAL_FORMATS;
     public static final Set<BarcodeFormat> ONE_D_FORMATS;
 
+    // 二维码解码
     public static final Set<BarcodeFormat> QR_CODE_FORMATS;
 
     static {
