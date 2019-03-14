@@ -1,1 +1,1 @@
-include ':app', ':qrcodelibrary', ':handlerlib'
+include ':app', ':qrcodelibrary', ':handlerlib', ':httprequestlib'

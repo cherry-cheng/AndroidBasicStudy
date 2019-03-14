@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/ll_scan"
@@ -39,4 +39,11 @@
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:textStyle="bold"
+        android:text="发送网络请求"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
