@@ -11,3 +11,5 @@
 封装简易版网络请求框架
 ## AnimationDemo中是Canvas的drawBitmap
 简历版本的drawBitmap的对号动效和树叶加载进度条的效果
+## 组件化项目架构的基础配置
+组件化项目的架构以及组件之间的数据传递方式
