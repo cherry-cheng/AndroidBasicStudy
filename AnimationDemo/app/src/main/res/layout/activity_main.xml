@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <com.cyh.animationdemo.PieView
+        android:id="@+id/pieView"
+        android:visibility="gone"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+    <Button
+        android:id="@+id/bt"
+        android:text="改变角度"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.cyh.animationdemo.AnimCheckView
+        android:id="@+id/animCheckView"
+        android:layout_width="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="200dp" />
+
+    <Button
+        android:id="@+id/check"
+        android:text="check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/uncheck"
+        android:text="uncheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
