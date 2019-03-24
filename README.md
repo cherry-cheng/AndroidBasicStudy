@@ -9,3 +9,5 @@
 按照生产者消费者模式，写出一个简易版的Handler的处理方法
 ## 网络请求框架的大致理解
 封装简易版网络请求框架
+## AnimationDemo中是Canvas的drawBitmap
+简历版本的drawBitmap的对号动效和树叶加载进度条的效果
