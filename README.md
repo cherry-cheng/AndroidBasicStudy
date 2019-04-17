@@ -21,3 +21,5 @@
 md的系统学习
 ## 自定义控件的实战
 PathMeasure的花样玩法儿、RecyclerView的剖析、svg的自定义用法、阿里的vlayout的源码分析
+## LayoutInflater
+深入了解LayoutInflater工作原理，原生控件属性加入自定义属性的解析
