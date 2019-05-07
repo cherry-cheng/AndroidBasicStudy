@@ -25,3 +25,5 @@ PathMeasure的花样玩法儿、RecyclerView的剖析、svg的自定义用法、
 深入了解LayoutInflater工作原理，原生控件属性加入自定义属性的解析
 ##事件分发
 用java项目模拟事件分发的原理，简单学习使用，DOWN事件处理   TouchTarget优秀思想
+##网易云音乐列表界面的实现和适配原理
+这种适配方式可用于任何机型和情况，主要是滑动透明度变化 Glide高级用法
